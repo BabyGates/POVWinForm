@@ -7,13 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using FireSharp.Interfaces;
+using FireSharp.Config;
+using FireSharp.Response;
 namespace POVWinForm
 {
     public partial class Form1 : Form
     {
+        IFirebaseConfig config = new FirebaseConfig
+        {
+            AuthSecret = "Gn5S1RHVMuZUFrqgDWpPWPTuIQs0U6n0krlYTGiL",
+            BasePath = "https://povglobedatabase.firebaseio.com/"
+        };
+        IFirebaseClient client;
         System.IO.Ports.SerialPort btLink = new System.IO.Ports.SerialPort();
-        
+
         public Form1()
         {
             InitializeComponent();
@@ -21,6 +29,7 @@ namespace POVWinForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            client = new FireSharp.FirebaseClient(config);
             try
             {
                 System.Threading.Thread.Sleep(2000);
@@ -46,14 +55,14 @@ namespace POVWinForm
                 MessageBox.Show("string too long");
                 return mainArray;
             }
-            for (int i =0; i< ori.Length; i++)
+            for (int i = 0; i < ori.Length; i++)
             {
-                
+
             }
 
             return mainArray;
         }
-        private void mainButton_Click(object sender, EventArgs e)
+        private async void mainButton_Click(object sender, EventArgs e)
         {
             string textString;
             if (string.IsNullOrWhiteSpace(stringBox.Text))
@@ -115,8 +124,33 @@ namespace POVWinForm
                 MessageBox.Show("value error");
                 return;
             }
-            btLink.WriteLine(textString + " " + redInt + " " + greenInt + " " + blueInt + " " + fpsInt);
-            //Console.WriteLine(textString + " " + redInt + " " + greenInt + " " + blueInt + " " + fpsInt);
+            //else valid data
+            var data = new Data
+            {
+                text = textString,
+                red = redInt,
+                green = greenInt,
+                blue = blueInt,
+                fps = fpsInt,
+                timeDate = DateTime.Now.ToString("dd/MM/yyyy") + " @ " + DateTime.Now.ToString("HH:mm:ss")
+            };
+            SetResponse response = await client.SetAsync("src/", data);
+
+            //btLink.WriteLine(textString + " " + redInt + " " + greenInt + " " + blueInt + " " + fpsInt);
+            Console.WriteLine(textString + " " + redInt + " " + greenInt + " " + blueInt + " " + fpsInt);
+
         }
     }
+    
+
+    internal class Data
+    {
+        public string text { get; set; }
+        public int red { get; set; }
+        public int green { get; set; }
+        public int blue { get; set; }
+        public int fps { get; set; }
+        public string timeDate { get; set; }
+    }
+
 }
