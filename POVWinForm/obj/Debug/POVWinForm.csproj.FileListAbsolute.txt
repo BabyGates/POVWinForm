@@ -1,0 +1,10 @@
+C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\bin\Debug\POVWinForm.exe.config
+C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\bin\Debug\POVWinForm.exe
+C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\bin\Debug\POVWinForm.pdb
+C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.csprojAssemblyReference.cache
+C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.Form1.resources
+C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.Properties.Resources.resources
+C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.csproj.GenerateResource.cache
+C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.csproj.CoreCompileInputs.cache
+C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.exe
+C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.pdb
