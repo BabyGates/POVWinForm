@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-//making sure the repo works dood
+
 namespace POVWinForm
 {
     public partial class Form1 : Form

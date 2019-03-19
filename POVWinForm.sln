@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POVWinForm", "POVWinForm\POVWinForm.csproj", "{EA76C65C-6979-47F0-86DD-6C9D75171325}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA76C65C-6979-47F0-86DD-6C9D75171325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA76C65C-6979-47F0-86DD-6C9D75171325}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA76C65C-6979-47F0-86DD-6C9D75171325}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA76C65C-6979-47F0-86DD-6C9D75171325}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {53800827-958F-4A18-8F0C-0C0EC04CCEBF}
+	EndGlobalSection
+EndGlobal
