@@ -88,5 +88,8 @@
   <ItemGroup>
     <Folder Include="resources\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Globe-outline.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

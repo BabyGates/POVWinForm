@@ -21,10 +21,17 @@ namespace POVWinForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            System.Threading.Thread.Sleep(2000);
-            btLink.BaudRate = 9600;
-            btLink.PortName = "COM4";
-            btLink.Open();
+            try
+            {
+                System.Threading.Thread.Sleep(2000);
+                btLink.BaudRate = 9600;
+                btLink.PortName = "COM4";
+                btLink.Open();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
         bool ensureAllDigits(string s)
         {
@@ -48,8 +55,6 @@ namespace POVWinForm
         }
         private void mainButton_Click(object sender, EventArgs e)
         {
-            
-
             string textString;
             if (string.IsNullOrWhiteSpace(stringBox.Text))
             {
