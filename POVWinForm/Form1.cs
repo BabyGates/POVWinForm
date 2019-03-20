@@ -12,7 +12,7 @@ using FireSharp.Config;
 using FireSharp.Response;
 namespace POVWinForm
 {
-    public partial class Form1 : Form
+    public partial class POVWinForm : Form
     {
         IFirebaseConfig config = new FirebaseConfig
         {
@@ -21,14 +21,15 @@ namespace POVWinForm
         };
         IFirebaseClient client;
         System.IO.Ports.SerialPort btLink = new System.IO.Ports.SerialPort();
-
-        public Form1()
+        public POVWinForm()
         {
             InitializeComponent();
+            this.MaximizeBox = false;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
             client = new FireSharp.FirebaseClient(config);
             try
             {
@@ -132,16 +133,36 @@ namespace POVWinForm
                 green = greenInt,
                 blue = blueInt,
                 fps = fpsInt,
-                timeDate = DateTime.Now.ToString("dd/MM/yyyy") + " @ " + DateTime.Now.ToString("HH:mm:ss")
+                timeDate = DateTime.Now.ToString("MM/dd/yyyy") + " @ " + DateTime.Now.ToString("HH:mm:ss")
             };
-            SetResponse response = await client.SetAsync("src/", data);
+            int i = 1;
+            while (true)
+            {
+                FirebaseResponse firebaseResponse = await client.GetAsync("src/" + i);
+                Data obj = firebaseResponse.ResultAs<Data>();
+                if (obj != null)
+                {
+                    i++;
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            SetResponse response = await client.SetAsync("src/" + i, data);
 
             //btLink.WriteLine(textString + " " + redInt + " " + greenInt + " " + blueInt + " " + fpsInt);
             Console.WriteLine(textString + " " + redInt + " " + greenInt + " " + blueInt + " " + fpsInt);
 
         }
+
+        private void resetButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
-    
+
 
     internal class Data
     {

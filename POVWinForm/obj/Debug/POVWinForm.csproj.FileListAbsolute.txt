@@ -2,7 +2,6 @@ C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\bin\Debug\POVWinForm.exe.
 C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\bin\Debug\POVWinForm.exe
 C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\bin\Debug\POVWinForm.pdb
 C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.csprojAssemblyReference.cache
-C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.Form1.resources
 C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.Properties.Resources.resources
 C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.csproj.GenerateResource.cache
 C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.csproj.CoreCompileInputs.cache
@@ -23,3 +22,4 @@ C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\bin\Debug\Newtonsoft.Json
 C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\bin\Debug\System.Net.Http.Extensions.xml
 C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\bin\Debug\System.Net.Http.Primitives.xml
 C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.csproj.CopyComplete
+C:\Users\Brannon\Desktop\VSRepos\POVWinForm\POVWinForm\obj\Debug\POVWinForm.POVWinForm.resources

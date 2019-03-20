@@ -105,7 +105,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="mainButtonLogo.png" />
     <None Include="CSELogo.JPG" />
   </ItemGroup>
   <ItemGroup>
