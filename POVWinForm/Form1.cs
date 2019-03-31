@@ -48,20 +48,89 @@ namespace POVWinForm
             if (s.All(char.IsDigit)) { return true; }
             else { return false; }
         }
-        int[,] serializeString(string ori)
+        int[,] serializeString(string text)
         {
-            int[,] mainArray = new int[144, 144];
-            if (ori.Length > 10)
+            //18 hori, 50 vertish
+            int[,] retArr = new int[18, 72];
+            for (int i =0; i< text.Length; i++)
             {
-                MessageBox.Show("string too long");
-                return mainArray;
+                char c = text[i];
+                if (c == 'a' || c == 'A')
+                {
+                    for (int k=0; k< 72; k++)
+                    {
+                        retArr[0,k] = 0;
+                        retArr[1, k] = 0;
+                    }
+                    for (int k = 0; k < 72; k++)
+                    {
+                        if (k < 29 || k > 48)
+                        {
+                            retArr[3, k] = 0;
+                        }
+                        else
+                        {
+                            retArr[3, k] = 1;
+                        }
+                    }
+                    for (int k = 0; k < 72; k++)
+                    {
+                        if (k < 27 || k > 48)
+                        {
+                            retArr[4, k] = 0;
+                        }
+                        else
+                        {
+                            retArr[4, k] = 1;
+                        }
+                    }
+                    int aRepeat = 5;
+                    for (int aloop = 0; aloop < 9; aloop++)
+                    {
+                        for (int k = 0; k < 72; k++)
+                        {
+                            if (k == 27 || k == 36 || k == 37)
+                            {
+                                retArr[aRepeat, k] = 1;
+                            }
+                            else
+                            {
+                                retArr[aRepeat, k] = 0;
+                            }
+                        }
+                        aRepeat++;
+                    }
+                    for (int k = 0; k < 72; k++)
+                    {
+                        if (k < 27 || k > 48)
+                        {
+                            retArr[14, k] = 0;
+                        }
+                        else
+                        {
+                            retArr[14, k] = 1;
+                        }
+                    }
+                    for (int k = 0; k < 72; k++)
+                    {
+                        if (k < 29 || k > 48)
+                        {
+                            retArr[15, k] = 0;
+                        }
+                        else
+                        {
+                            retArr[15, k] = 1;
+                        }
+                    }
+                    for (int k = 0; k < 72; k++)
+                    {
+                        retArr[16, k] = 0;
+                        retArr[17, k] = 0;
+                    }
+                }
             }
-            for (int i = 0; i < ori.Length; i++)
-            {
-
-            }
-
-            return mainArray;
+           
+            return retArr;
         }
         private async void mainButton_Click(object sender, EventArgs e)
         {
@@ -160,6 +229,22 @@ namespace POVWinForm
         private void resetButton_Click(object sender, EventArgs e)
         {
 
+            int[,] test = serializeString(stringBox.Text);
+            printArray(test);
+            //TODO
+        }
+        void printArray(int[,] ori)
+        {
+            int cols = ori.GetUpperBound(0) - ori.GetLowerBound(0) + 1;
+            int rows = ori.GetUpperBound(1) - ori.GetLowerBound(1) + 1;
+            for (int i =0; i< rows; i++)
+            {
+                for (int j=0; j< cols; j++)
+                {
+                    Console.Write(ori[j, i]);
+                }
+                Console.Write('\n');
+            }
         }
     }
 
