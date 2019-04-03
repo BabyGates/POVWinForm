@@ -40,7 +40,7 @@ namespace POVWinForm
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                MessageBox.Show(ex.ToString());
             }
         }
         bool ensureAllDigits(string s)
@@ -241,7 +241,7 @@ namespace POVWinForm
             {
                 for (int j=0; j< cols; j++)
                 {
-                    Console.Write(ori[j, i]);
+                    btLink.Write(ori[j, i].ToString());
                 }
                 Console.Write('\n');
             }
