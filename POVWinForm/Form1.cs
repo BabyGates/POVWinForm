@@ -31,6 +31,7 @@ namespace POVWinForm
         {
 
             client = new FireSharp.FirebaseClient(config);
+            
             try
             {
                 System.Threading.Thread.Sleep(2000);
@@ -42,6 +43,7 @@ namespace POVWinForm
             {
                 MessageBox.Show(ex.ToString());
             }
+            
         }
         bool ensureAllDigits(string s)
         {
