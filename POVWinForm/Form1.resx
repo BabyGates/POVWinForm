@@ -118,14 +118,17 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="textBox1.Text" xml:space="preserve">
-    <value>def displayOnGlobe():
+    <value>
+def displayOnGlobe():
      #this is the entry point to our function
 
      updateRefreshRate(         )
-     #values 0 - 50. This is the effective FPS 
+     #values 0 - 255. 
+     #This is the effective FPS.
 
      updateColor(        ,        ,        )
-     #Red, Green, Blue values respectively. 0-255
+     #Red, Green, Blue values respectively.
+     #Each value 0-255
 
      updateText(                                 )
      #Max string length = 20 char</value>
@@ -3518,9 +3521,6 @@
         MquDSZIkdd+lsJG0wAL/B8MbzsSnzmbAAAAAAElFTkSuQmCC
 </value>
   </data>
-  <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAICAAAAEAIACoEAAAFgAAACgAAAAgAAAAQAAAAAEAIAAAAAAAABAAANgYAADYGAAAAAAAAAAA

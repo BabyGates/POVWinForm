@@ -10,10 +10,18 @@ using System.Windows.Forms;
 using FireSharp.Interfaces;
 using FireSharp.Config;
 using FireSharp.Response;
+using System.IO.Ports;
+using System.IO;
 namespace POVWinForm
 {
+
     public partial class POVWinForm : Form
     {
+        char currentFocus = 'f';
+        int maxStrLeng = 10;
+        int currentManualIndex;
+        bool manualOpen = false;
+        bool bluetoothHelpOpen = false;
         IFirebaseConfig config = new FirebaseConfig
         {
             AuthSecret = "Gn5S1RHVMuZUFrqgDWpPWPTuIQs0U6n0krlYTGiL",
@@ -24,14 +32,32 @@ namespace POVWinForm
         public POVWinForm()
         {
             InitializeComponent();
-            this.MaximizeBox = false;
+            this.AutoScaleMode = AutoScaleMode.Dpi;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            try
+            {
+                var ping = new System.Net.NetworkInformation.Ping();
+                var result = ping.Send("www.google.com");
+            }
+            catch
+            {
+                MessageBox.Show("Internet connectivity issue. Please connect to the internet and try again.");
+                this.Close();
+            }
             client = new FireSharp.FirebaseClient(config);
-            
+            var data = new Data
+            {
+                text = "BOOT",
+                red = 0,
+                green = 0,
+                blue = 0,
+                fps = 0,
+                timeDate = DateTime.Now.ToString("MM/dd/yyyy") + " @ " + DateTime.Now.ToString("HH:mm:ss")
+            };
+            log(data);
             try
             {
                 System.Threading.Thread.Sleep(2000);
@@ -39,100 +65,42 @@ namespace POVWinForm
                 btLink.PortName = "COM4";
                 btLink.Open();
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show("Error pairing to POV Globe via bluetooth. Please restart both applications or contact Brannon for assistance :)\nbrannonh@buffalo.edu");
             }
-            
+
         }
         bool ensureAllDigits(string s)
         {
             if (s.All(char.IsDigit)) { return true; }
             else { return false; }
         }
-        int[,] serializeString(string text)
+        private async void log(Data d)
         {
-            //18 hori, 50 vertish
-            int[,] retArr = new int[18, 72];
-            for (int i =0; i< text.Length; i++)
+            try
             {
-                char c = text[i];
-                if (c == 'a' || c == 'A')
+                int i = 1;
+                while (true)
                 {
-                    for (int k=0; k< 72; k++)
+                    FirebaseResponse firebaseResponse = await client.GetAsync("src/" + i);
+                    Data obj = firebaseResponse.ResultAs<Data>();
+                    if (obj != null)
                     {
-                        retArr[0,k] = 0;
-                        retArr[1, k] = 0;
+                        i++;
+                        continue;
                     }
-                    for (int k = 0; k < 72; k++)
+                    else
                     {
-                        if (k < 29 || k > 48)
-                        {
-                            retArr[3, k] = 0;
-                        }
-                        else
-                        {
-                            retArr[3, k] = 1;
-                        }
-                    }
-                    for (int k = 0; k < 72; k++)
-                    {
-                        if (k < 27 || k > 48)
-                        {
-                            retArr[4, k] = 0;
-                        }
-                        else
-                        {
-                            retArr[4, k] = 1;
-                        }
-                    }
-                    int aRepeat = 5;
-                    for (int aloop = 0; aloop < 9; aloop++)
-                    {
-                        for (int k = 0; k < 72; k++)
-                        {
-                            if (k == 27 || k == 36 || k == 37)
-                            {
-                                retArr[aRepeat, k] = 1;
-                            }
-                            else
-                            {
-                                retArr[aRepeat, k] = 0;
-                            }
-                        }
-                        aRepeat++;
-                    }
-                    for (int k = 0; k < 72; k++)
-                    {
-                        if (k < 27 || k > 48)
-                        {
-                            retArr[14, k] = 0;
-                        }
-                        else
-                        {
-                            retArr[14, k] = 1;
-                        }
-                    }
-                    for (int k = 0; k < 72; k++)
-                    {
-                        if (k < 29 || k > 48)
-                        {
-                            retArr[15, k] = 0;
-                        }
-                        else
-                        {
-                            retArr[15, k] = 1;
-                        }
-                    }
-                    for (int k = 0; k < 72; k++)
-                    {
-                        retArr[16, k] = 0;
-                        retArr[17, k] = 0;
+                        SetResponse response = await client.SetAsync("src/" + i, d);
+                        break;
                     }
                 }
             }
-           
-            return retArr;
+            catch
+            {
+
+            }
         }
         private async void mainButton_Click(object sender, EventArgs e)
         {
@@ -149,51 +117,67 @@ namespace POVWinForm
             string redString;
             if (string.IsNullOrWhiteSpace(redBox.Text))
             {
-                redString = "0";
+                redString = "000";
             }
             else
             {
                 redString = redBox.Text.ToString();
+                while (redString.Length < 3)
+                {
+                    redString = "0" + redString;
+                }
             }
             string greenString;
             if (string.IsNullOrWhiteSpace(greenBox.Text))
             {
-                greenString = "0";
+                greenString = "000";
             }
             else
             {
                 greenString = greenBox.Text.ToString();
+                while (greenString.Length < 3)
+                {
+                    greenString = "0" + greenString;
+                }
             }
             string blueString;
             if (string.IsNullOrWhiteSpace(blueBox.Text))
             {
-                blueString = "0";
+                blueString = "000";
             }
             else
             {
                 blueString = blueBox.Text.ToString();
+                while (blueString.Length < 3)
+                {
+                    blueString = "0" + blueString;
+                }
             }
             string fpsString;
             if (string.IsNullOrWhiteSpace(fpsBox.Text))
             {
-                fpsString = "0";
+                fpsString = "000";
             }
             else
             {
                 fpsString = fpsBox.Text.ToString();
+                while (fpsString.Length < 3)
+                {
+                    fpsString = "0" + fpsString;
+                }
             }
             if (!ensureAllDigits(redString) || !ensureAllDigits(greenString) || !ensureAllDigits(blueString) || !ensureAllDigits(fpsString))
             {
-                MessageBox.Show("syntax error");
+                MessageBox.Show("Please check the syntax of your input.");
                 return;
             }
             int redInt = Convert.ToInt16(redString);
             int greenInt = Convert.ToInt16(greenString);
             int blueInt = Convert.ToInt16(blueString);
             int fpsInt = Convert.ToInt16(fpsString);
-            if (redInt > 255 || greenInt > 255 || blueInt > 255 || fpsInt > 50)
+            if (redInt > 255 || greenInt > 255 || blueInt > 255 || fpsInt > 255)
             {
-                MessageBox.Show("value error");
+                MessageBox.Show("Please check the values of your input.");
                 return;
             }
             //else valid data
@@ -218,39 +202,161 @@ namespace POVWinForm
                 }
                 else
                 {
+                    SetResponse response = await client.SetAsync("src/" + i, data);
                     break;
                 }
             }
-            SetResponse response = await client.SetAsync("src/" + i, data);
-
-            //btLink.WriteLine(textString + " " + redInt + " " + greenInt + " " + blueInt + " " + fpsInt);
-            Console.WriteLine(textString + " " + redInt + " " + greenInt + " " + blueInt + " " + fpsInt);
-
+            string transmissionString = "";
+            transmissionString += "s";
+            transmissionString += "r" + redString;
+            transmissionString += "g" + greenString;
+            transmissionString += "b" + blueString;
+            transmissionString += "f" + fpsString;
+            transmissionString += ";" + textString + '~';
+            try
+            {
+                //transmission
+                btLink.WriteLine(transmissionString);
+            }
+            catch
+            {
+                MessageBox.Show("Transmission error. Please contact Brannon with any technical difficulties. brannonh@buffalo.edu");
+            }
         }
 
         private void resetButton_Click(object sender, EventArgs e)
         {
-
-            int[,] test = serializeString(stringBox.Text);
-            printArray(test);
-            //TODO
-        }
-        void printArray(int[,] ori)
-        {
-            int cols = ori.GetUpperBound(0) - ori.GetLowerBound(0) + 1;
-            int rows = ori.GetUpperBound(1) - ori.GetLowerBound(1) + 1;
-            for (int i =0; i< rows; i++)
+            try
             {
-                for (int j=0; j< cols; j++)
-                {
-                    btLink.Write(ori[j, i].ToString());
-                }
-                Console.Write('\n');
+                //transmission
+                btLink.WriteLine("r");
+            }
+            catch
+            {
+                MessageBox.Show("Transmission error. Please contact Brannon with any technical difficulties. brannonh@buffalo.edu");
             }
         }
+        private bool dontOverFlowMyTextBoxesPlz()
+        {
+            if ((fpsBox.Text.Length == 2 && currentFocus == 'f')
+                || (redBox.Text.Length == 3 && currentFocus == 'r')
+                || (greenBox.Text.Length == 3 && currentFocus == 'g')
+                || (blueBox.Text.Length == 3 && currentFocus == 'b')
+                || (stringBox.Text.Length == maxStrLeng && currentFocus == 's'))
+            { return false; }
+            else { return true; }
+
+        }
+
+        private void fpsBox_Click(object sender, EventArgs e)
+        {
+            currentFocus = 'f';
+        }
+        private void stringBox_Click(object sender, EventArgs e)
+        {
+            currentFocus = 's';
+        }
+        private void redBox_Click(object sender, EventArgs e)
+        {
+            currentFocus = 'r';
+        }
+        private void greenBox_Click(object sender, EventArgs e)
+        {
+            currentFocus = 'g';
+        }
+        private void blueBox_Click(object sender, EventArgs e)
+
+        {
+            currentFocus = 'b';
+        }
+
+        private void manualButton_Click(object sender, EventArgs e)
+        {
+            manualOpen = true;
+            authorLabel.Visible = false;
+            manualPictureBox.Visible = true;
+            leftButton.Visible = true;
+            exitManualButton.Visible = true;
+            rightButton.Visible = true;
+            resetButton.Enabled = false;
+            btHelpButton.Enabled = false;
+            mainButton.Enabled = false;
+            manualButton.Enabled = false;
+            manualPictureBox.Load(Application.StartupPath + "\\slides\\" + "manualSlide0.png");
+            currentManualIndex = 0;
+        }
+
+        private void leftButton_Click(object sender, EventArgs e)
+        {
+            if (bluetoothHelpOpen == true)
+            {
+                if (File.Exists(Application.StartupPath + "\\btHelp\\" + "btHelp" + (currentManualIndex + (-1)) + ".png"))
+                {
+                    currentManualIndex--;
+                    manualPictureBox.Load(Application.StartupPath + "\\btHelp\\" + "btHelp" + currentManualIndex + ".png");
+                }
+            }
+            else
+            {
+                if (File.Exists(Application.StartupPath + "\\slides\\" + "manualSlide" + (currentManualIndex + (-1)) + ".png"))
+                {
+                    currentManualIndex--;
+                    manualPictureBox.Load(Application.StartupPath + "\\slides\\" + "manualSlide" + currentManualIndex + ".png");
+                }
+            }
+        }
+
+        private void exitManualButton_Click(object sender, EventArgs e)
+        {
+            if (manualOpen == true) { manualOpen = false; }
+            else { bluetoothHelpOpen = false; }
+            manualPictureBox.Visible = false;
+            leftButton.Visible = false;
+            exitManualButton.Visible = false;
+            rightButton.Visible = false;
+            resetButton.Enabled = true;
+            btHelpButton.Enabled = true;
+            mainButton.Enabled = true;
+            manualButton.Enabled = true;
+            authorLabel.Visible = true;
+        }
+
+        private void rightButton_Click(object sender, EventArgs e)
+        {
+            if (bluetoothHelpOpen == true)
+            {
+                if (File.Exists(Application.StartupPath + "\\btHelp\\" + "btHelp" + (currentManualIndex + 1) + ".png"))
+                {
+                    currentManualIndex++;
+                    manualPictureBox.Load(Application.StartupPath + "\\btHelp\\" + "btHelp" + currentManualIndex + ".png");
+                }
+            }
+            else
+            {
+                if (File.Exists(Application.StartupPath + "\\slides\\" + "manualSlide" + (currentManualIndex + 1) + ".png"))
+                {
+                    currentManualIndex++;
+                    manualPictureBox.Load(Application.StartupPath + "\\slides\\" + "manualSlide" + currentManualIndex + ".png");
+                }
+            }
+        }
+
+        private void btHelpButton_Click(object sender, EventArgs e)
+        {
+            bluetoothHelpOpen = true;
+            authorLabel.Visible = false;
+            manualPictureBox.Visible = true;
+            leftButton.Visible = true;
+            exitManualButton.Visible = true;
+            btHelpButton.Enabled = false;
+            rightButton.Visible = true;
+            resetButton.Enabled = false;
+            mainButton.Enabled = false;
+            manualButton.Enabled = false;
+            manualPictureBox.Load(Application.StartupPath + "\\btHelp\\" + "btHelp0.png");
+            currentManualIndex = 0;
+        }
     }
-
-
     internal class Data
     {
         public string text { get; set; }
